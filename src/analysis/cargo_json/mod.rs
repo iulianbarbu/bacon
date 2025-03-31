@@ -9,8 +9,8 @@ use {
     anyhow::Result,
     cargo_json_export::*,
     cargo_metadata::{
-        Message,
         diagnostic::Diagnostic,
+        Message,
     },
 };
 
@@ -58,12 +58,7 @@ impl Analyzer for CargoJsonAnalyzer {
                 self.receive_cargo_message(message, cmd_line.origin, command_output);
             }
             Err(err) => {
-                let line = TLine::from_tty(&format!("Error parsing JSON: {}", err));
-                let cmd_line = CommandOutputLine {
-                    content: line,
-                    origin: cmd_line.origin,
-                };
-                command_output.push(cmd_line);
+                error!("Error while parsing cargo message line: {err}, content: {content}");
             }
         }
     }
